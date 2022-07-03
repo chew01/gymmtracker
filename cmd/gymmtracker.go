@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 )
 
 var stdout = flag.Bool("stdout", true, "enable/disable logging to console")
@@ -21,6 +22,13 @@ func main() {
 		err = errors.New("error loading environment variables: " + err.Error())
 		panic(err)
 	}
+
+	// Set program timezone to Asia/Singapore time
+	loc, err := time.LoadLocation("Asia/Singapore")
+	if err != nil {
+		err = errors.New("error loading Singapore location data: " + err.Error())
+	}
+	time.Local = loc
 
 	// Parse cmd flags and instantiate new client
 	flag.Parse()
